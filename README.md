@@ -182,6 +182,3 @@ The script `Homelab_Setup.ps1` automates the full environment setup:
 - Documentation — full environment documented with configs, test results, and procedures
 
 ---
-
-*Built by Md Tanjil Sarwar — Calgary, AB*  
-*Part of an ongoing IT home lab portfolio*
