@@ -113,18 +113,18 @@ A service account `svc-kiosk` was created under Calgary/Service Account OU for a
 
 ## PowerShell Automation
 
-The script `Setup-HomeLab-AD.ps1` automates the full environment setup:
+The script `Homelab_Setup.ps1` automates the full environment setup:
 
 - Creates all OUs including sub-OUs across 3 cities
 - Creates 15 security groups + 1 distribution group
 - Creates 45 users, assigns each to the correct group
 - Creates 15 computer objects with standardized naming
-- Creates test user `johndoe` and service account `svc-kiosk`
+- Creates service account
 
 ### Usage
 ```powershell
 # Run on the Domain Controller as Administrator
-.\Setup-HomeLab-AD.ps1
+.\Homelab_Setup.ps1
 ```
 
 > **Note:** Default password for all created accounts is `P@ssw0rd123!` — change before using in any real environment.
