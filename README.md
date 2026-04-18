@@ -160,20 +160,3 @@ The script `Homelab_Setup.ps1` automates the full environment setup:
 
 ---
 
-## Repository Structure
-
-```
-homelab-ad/
-├── README.md
-├── Homelab_Setup.ps1
-├── HomeLab_Documentation.docx
-└── screenshots/
-    ├── ad-ou-structure.png
-    ├── gpo-management.png
-    ├── gpresult-applied.png
-    ├── mapped-drive.png
-    ├── fsrm-quota.png
-    └── rdp-test.png
-```
-
----
