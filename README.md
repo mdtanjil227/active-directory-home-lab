@@ -1,7 +1,6 @@
 # Active Directory Home Lab
 
-A hands-on home lab simulating an enterprise Active Directory environment built on Windows Server 2022. This project was built to develop real-world IT support and sysadmin skills 
-including user lifecycle management, Group Policy, shared storage, security policies, and service account configuration.
+A hands-on home lab simulating an enterprise Active Directory environment built on Windows Server 2022. This project was built to develop real-world IT support and sysadmin skills including user lifecycle management, Group Policy, shared storage, security policies, and service account configuration.
 
 ---
 
@@ -38,6 +37,8 @@ HomeLab.local
     └── Users
 ```
 
+![AD OU Structure](screenshots/ad-ou-structure.png)
+
 ### Users
 45 user accounts created across 3 cities and 5 departments (Accounting, HR, IT, Management, Sales) using a PowerShell automation script. Each user is assigned to their corresponding city and department security group.
 
@@ -63,6 +64,10 @@ HomeLab.local
 
 All GPOs were verified using `gpresult /r` on the domain-joined workstation logged in as a standard domain user.
 
+![GPO Management](screenshots/gpo-management.png)
+
+![GPResult Applied](screenshots/gpresult-applied.png)
+
 ---
 
 ## Shared Folder & FSRM
@@ -76,6 +81,8 @@ A shared folder was created at `C:\Shared` and published as `\\WIN-BQ8SMHJIM4M\S
 - **Quota:** 500MB soft quota on the shared folder with email notification at 80% threshold
 - **File Screening:** Active screen blocking .exe, .bat, and .cmd files from being saved to the share
 - Tested by attempting to upload an executable — blocked as expected
+
+![FSRM Quota](screenshots/fsrm-quota.png)
 
 ---
 
@@ -101,13 +108,29 @@ A separate policy was configured via Active Directory Administrative Center (ADA
 
 ## Service Account & Kiosk Setup
 
-A service account `svc-kiosk` was created under Calgary/Service Account OU for a single-purpose kiosk workstation.
+A service account was created under Calgary/Service Account OU for a single-purpose kiosk workstation.
 
 - Non-expiring password, cannot change password
 - Auto-login configured via registry on the kiosk workstation
 - Microsoft Edge launches automatically on boot and opens a designated URL
 - Interactive login denied via User Rights Assignment GPO
 - Result: Machine boots, auto-logs in, opens browser — no manual credentials required
+
+---
+
+## Remote Desktop
+
+RDP access was configured and tested between the domain-joined client and the domain controller. Access was granted to the IT Users group via User Rights Assignment GPO and denied to standard users.
+
+![RDP Test](screenshots/rdp-test.png)
+
+---
+
+## Mapped Drive
+
+Network drive S: was mapped to the shared folder via GPO Preferences and confirmed working on the domain-joined client after `gpupdate /force` and re-login.
+
+![Mapped Drive](screenshots/mapped-drive.png)
 
 ---
 
@@ -160,3 +183,5 @@ The script `Homelab_Setup.ps1` automates the full environment setup:
 
 ---
 
+*Built by Md Tanjil Sarwar — Calgary, AB*  
+*Part of an ongoing IT home lab portfolio*
