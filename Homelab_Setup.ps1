@@ -1,9 +1,5 @@
 # =============================================================================
 # Active Directory Home Lab Setup Script
-# Author: Md Tanjil Sarwar
-# Domain: HomeLab.local
-# Description: Creates OUs, users, security groups, computers, and a
-#              distribution group for a multi-city AD home lab environment.
 # =============================================================================
 
 Import-Module ActiveDirectory
@@ -12,9 +8,7 @@ $domain     = "HomeLab.local"
 $domainDN   = "DC=HomeLab,DC=local"
 $password   = ConvertTo-SecureString "P@ssw0rd123!" -AsPlainText -Force
 
-# =============================================================================
-# SECTION 1: CREATE ORGANIZATIONAL UNITS
-# =============================================================================
+# Create Organizational Units
 
 Write-Host "`n[+] Creating Organizational Units..." -ForegroundColor Cyan
 
@@ -41,7 +35,7 @@ foreach ($city in $cities) {
     }
 }
 
-# Calgary also gets a Service Account OU
+# Calgary Service Account OU
 $svcOUPath = "OU=Calgary,$domainDN"
 $svcExists = Get-ADOrganizationalUnit -Filter "Name -eq 'Service Account'" -SearchBase $svcOUPath -ErrorAction SilentlyContinue
 if (-not $svcExists) {
@@ -49,9 +43,7 @@ if (-not $svcExists) {
     Write-Host "  Created OU: Calgary/Service Account" -ForegroundColor Green
 }
 
-# =============================================================================
-# SECTION 2: CREATE SECURITY GROUPS (5 per city = 15 total)
-# =============================================================================
+# Create Security Groups
 
 Write-Host "`n[+] Creating Security Groups..." -ForegroundColor Cyan
 
@@ -84,9 +76,7 @@ if (-not $dlExists) {
     Write-Host "  Created Distribution Group: DL-ITAdmins" -ForegroundColor Green
 }
 
-# =============================================================================
-# SECTION 3: CREATE USERS (5 departments x 3 users x 3 cities = 45 users)
-# =============================================================================
+# Create Users
 
 Write-Host "`n[+] Creating User Accounts..." -ForegroundColor Cyan
 
@@ -148,9 +138,7 @@ if (-not $testExists) {
     Write-Host "  Created Test User: John Doe (johndoe)" -ForegroundColor Green
 }
 
-# =============================================================================
-# SECTION 4: CREATE COMPUTER OBJECTS (5 per city = 15 total)
-# =============================================================================
+# Create Computer Objects
 
 Write-Host "`n[+] Creating Computer Objects..." -ForegroundColor Cyan
 
@@ -186,37 +174,18 @@ foreach ($city in $cities) {
     }
 }
 
-# =============================================================================
-# SECTION 5: CREATE SERVICE ACCOUNT
-# =============================================================================
+# Create Service Account
 
 Write-Host "`n[+] Creating Service Account..." -ForegroundColor Cyan
 
 $svcExists = Get-ADUser -Filter "SamAccountName -eq 'svc-kiosk'" -ErrorAction SilentlyContinue
 if (-not $svcExists) {
-    New-ADUser -Name "Kiosk Service Account" `
-               -SamAccountName "svc-kiosk" `
-               -UserPrincipalName "svc-kiosk@$domain" `
-               -DisplayName "Kiosk Service Account" `
-               -Path "OU=Service Account,OU=Calgary,$domainDN" `
-               -AccountPassword $password `
-               -Enabled $true `
-               -PasswordNeverExpires $true `
-               -CannotChangePassword $true `
-               -Description "Service account for kiosk auto-login workstation"
+    New-ADUser -Name "Website Login" `
+               -SamAccountName "$website-login" `
+               -UserPrincipalName "$website-login@$domain" `
+               -DisplayName "Website Login" `
+               -Description "Autologin to Website" `
     Write-Host "  Created Service Account: svc-kiosk" -ForegroundColor Green
 }
 
-# =============================================================================
-# DONE
-# =============================================================================
 
-Write-Host "`n[✓] Home Lab AD Setup Complete!" -ForegroundColor Yellow
-Write-Host "    Domain    : $domain" -ForegroundColor White
-Write-Host "    Cities    : Calgary, Camrose, Edmonton" -ForegroundColor White
-Write-Host "    Users     : 45 + 1 test user (johndoe)" -ForegroundColor White
-Write-Host "    Groups    : 15 security + 1 distribution" -ForegroundColor White
-Write-Host "    Computers : 15 objects" -ForegroundColor White
-Write-Host "    Service   : svc-kiosk (kiosk auto-login)" -ForegroundColor White
-Write-Host "`n    Default password for all accounts: P@ssw0rd123!" -ForegroundColor Red
-Write-Host "    Change passwords before using in any real environment.`n" -ForegroundColor Red
