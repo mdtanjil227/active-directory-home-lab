@@ -165,9 +165,9 @@ The script `Setup-HomeLab-AD.ps1` automates the full environment setup:
 ```
 homelab-ad/
 ├── README.md
-├── Setup-HomeLab-AD.ps1
+├── Homelab_Setup.ps1
 ├── docs/
-│   └── HomeLab_AD_Documentation.docx
+│   └── HomeLab_Documentation.docx
 └── screenshots/
     ├── ad-ou-structure.png
     ├── gpo-management.png
